@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       district:{
         type: DataTypes.STRING
       },
+      // photo:{
+      //   type: DataTypes.TEXT
+      // },
       role: {
         type: DataTypes.STRING,
         defaultValue: "user",

@@ -5,8 +5,8 @@ const verifyToken = require('../lib/verifyToken');
 router.get('/all', userController.getAllUser);
 router.post('/register', userController.registerUser);
 router.post('/login', userController.login);
+router.get('/singleUser', verifyToken, userController.getSingleUser)
 router.route('/:id')
-.get(userController.getUserById)
 .put(verifyToken, userController.updateUser)
 .delete(verifyToken, userController.deleteUser)
 

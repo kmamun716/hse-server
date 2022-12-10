@@ -92,8 +92,8 @@ module.exports = {
       });
     }
   },
-  getUserById: async (req, res) => {
-    const id = req.params.id;
+  getSingleUser: async (req, res) => {
+    const id = req.user.id;
     const user = await User.findOne({
       where: { id: id },
       attributes: { exclude: ["password"] },
@@ -115,6 +115,7 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     const id = req.params.id;
+    console.log(id, req.body)
     const updatedUser = await User.update(req.body, { where: { id: id } });
     if (updatedUser[0] > 0) {
       res.status(200).json({
