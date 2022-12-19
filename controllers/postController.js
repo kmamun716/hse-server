@@ -15,6 +15,7 @@ module.exports = {
   },
   allPost: async (req, res) => {
     const posts = await Post.findAll({
+      order: [ [ 'createdAt', 'DESC' ]],
       include: [
         {
           model: db.users,
