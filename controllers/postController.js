@@ -35,6 +35,30 @@ module.exports = {
       });
     }
   },
+  getAllPostByUser: async(req, res)=>{
+    const user = req.user.id;
+    const posts = await Post.findAll({
+      where: {userId: user},      
+      order: [ [ 'createdAt', 'DESC' ]],
+      include: [
+        {
+          model: db.users,
+          as: "user",
+          attributes: ["name", "email"]
+        },
+      ], 
+      attributes: {
+        exclude: ["userId"]
+      }
+    });
+    if(posts !== null){
+      res.status(200).json(posts);
+    }else{
+      res.status(400).json({
+        message: 'No Post Found'
+      })
+    }
+  },
   getPostById: async (req, res) => {
     const id = req.params.id;
     const post = await Post.findOne({ where: { id: id }, include: [
