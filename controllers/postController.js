@@ -15,17 +15,17 @@ module.exports = {
   },
   allPost: async (req, res) => {
     const posts = await Post.findAll({
-      order: [ [ 'createdAt', 'DESC' ]],
+      order: [["createdAt", "DESC"]],
       include: [
         {
           model: db.users,
           as: "user",
           attributes: ["name", "email"],
-        }, 
+        },
       ],
       attributes: {
-        exclude: ["userId"]
-      }
+        exclude: ["userId"],
+      },
     });
     if (posts.length > 0) {
       res.status(200).json(posts);
@@ -35,42 +35,44 @@ module.exports = {
       });
     }
   },
-  getAllPostByUser: async(req, res)=>{
+  getAllPostByUser: async (req, res) => {
     const user = req.user.id;
     const posts = await Post.findAll({
-      where: {userId: user},      
-      order: [ [ 'createdAt', 'DESC' ]],
+      where: { userId: user },
+      order: [["createdAt", "DESC"]],
       include: [
         {
           model: db.users,
           as: "user",
-          attributes: ["name", "email"]
+          attributes: ["name", "email"],
         },
-      ], 
+      ],
       attributes: {
-        exclude: ["userId"]
-      }
+        exclude: ["userId"],
+      },
     });
-    if(posts !== null){
+    if (posts !== null) {
       res.status(200).json(posts);
-    }else{
+    } else {
       res.status(400).json({
-        message: 'No Post Found'
-      })
+        message: "No Post Found",
+      });
     }
   },
   getPostById: async (req, res) => {
     const id = req.params.id;
-    const post = await Post.findOne({ where: { id: id }, include: [
+    const post = await Post.findOne({
+      where: { id: id },
+      include: [
         {
           model: db.users,
           as: "user",
-          attributes: ["name", "email"]
+          attributes: ["name", "email"],
         },
-      ], 
+      ],
       attributes: {
-        exclude: ["userId"]
-      }
+        exclude: ["userId"],
+      },
     });
     if (post !== null) {
       res.status(200).json(post);
@@ -78,6 +80,27 @@ module.exports = {
       res.status(404).json({
         message: "No Post Found",
       });
+    }
+  },
+  getPostBySlug: async (req, res) => {
+    const title = req.params.slug;
+    const post = await Post.findOne({
+      where: { title: title },
+      include: [
+        {
+          model: db.users,
+          as: "user",
+          attributes: ["name", "email"],
+        },
+      ],
+      attributes: {
+        exclude: ["userId"],
+      },
+    });
+    if (post !== null) {
+      res.status(200).json(post);
+    } else {
+      res.status(400).json({ message: "No Post Found" });
     }
   },
   updatePost: async (req, res) => {
@@ -95,15 +118,15 @@ module.exports = {
   },
   deletePost: async (req, res) => {
     const id = req.params.id;
-    const deletedPost = await Post.destroy({where: {id: id}});
-    if(deletedPost>0){
-        res.status(200).json({
-            message: "Post Delete Successfully"
-        })
-    }else{
-        res.status(404).json({
-            message: "Post Not Found"
-        })
+    const deletedPost = await Post.destroy({ where: { id: id } });
+    if (deletedPost > 0) {
+      res.status(200).json({
+        message: "Post Delete Successfully",
+      });
+    } else {
+      res.status(404).json({
+        message: "Post Not Found",
+      });
     }
   },
 };

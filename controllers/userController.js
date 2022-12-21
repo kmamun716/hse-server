@@ -42,7 +42,6 @@ module.exports = {
   login: async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email: email } });
-    console.log(user);
     if (user === null) {
       res.status(404).json({
         message: "User Not Found",
